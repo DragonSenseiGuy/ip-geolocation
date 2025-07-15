@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IP Geolocation</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='ip.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>IP Geolocation</h1>
+
+    <form action="{{ url_for('ip_lookup') }}" method="POST">
+      <input type="text" name="ip" placeholder="Enter IP address" required />
+      <button type="submit">Find Location</button>
+    </form>
+  </div>
+
+  {% if data %}
+  <div class="flex-container">
+    <div class="info-box">
+      <h2>Location Details</h2>
+      {% if data.error %}
+        <p style="color:red;">Error: {{ data.error }}</p>
+      {% else %}
+        <p><strong>City:</strong> {{ data.city or 'N/A' }}</p>
+        <p><strong>Region:</strong> {{ data.regionName or 'N/A' }}</p>
+        <p><strong>Country:</strong> {{ data.country or 'N/A' }}</p>
+        <p><strong>ISP:</strong> {{ data.isp or 'N/A' }}</p>
+        <p><strong>Org:</strong> {{ data.org or 'N/A' }}</p>
+        <p><strong>Latitude:</strong> {{ data.lat or 'N/A' }}</p>
+        <p><strong>Longitude:</strong> {{ data.lon or 'N/A' }}</p>
+      {% endif %}
+    </div>
+
+    <div class="map-box">
+      {{ map_html|safe }}
+    </div>
+  </div>
+  {% endif %}
+</body>
+</html>
